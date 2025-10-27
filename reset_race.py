@@ -1,0 +1,1 @@
+print(get_cost(Unlocks.Leaderboard, 0))
