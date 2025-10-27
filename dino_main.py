@@ -1,5 +1,5 @@
 from initial_apple_search import initial_apple_search
-from Ultimate_Planting import traverse_plot_with_fn
+from farm_traversal import traverse_plot_with_fn
 from s_walk import s_walk_loop, traverse_plant_and_harvest_sunflower
 from targeted_move import move_to_xy
 

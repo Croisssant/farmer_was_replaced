@@ -1,5 +1,5 @@
-from Ultimate_Planting import traverse_plot_with_fn
-from basic_checks import should_till
+from farm_traversal import traverse_plot_with_fn
+from utils import should_till
 
 def plant_cactus():
 	curr_plant = Entities.Cactus

@@ -1,5 +1,5 @@
 from for_all import for_all
-from basic_checks import should_till
+from utils import should_till
 final_plot = [
 [Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush],
 [Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree, Entities.Bush, Entities.Tree],

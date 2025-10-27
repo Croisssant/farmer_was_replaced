@@ -1,5 +1,5 @@
 from targeted_move import limited_move_to, move_to_xy
-from Ultimate_Planting import traverse_plot_with_fn
+from farm_traversal import traverse_plot_with_fn
 
 def plant_sunflower():
 	if can_harvest():

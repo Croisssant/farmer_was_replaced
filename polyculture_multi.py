@@ -1,5 +1,5 @@
 from targeted_move import move_to_xy
-from basic_checks import should_till
+from utils import should_till
 from multi_drone import multi_drone_fn, water_10_times
 
 def multi_drone_fn_split(fn_1, fn_2, move_direction):
