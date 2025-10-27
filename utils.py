@@ -15,3 +15,15 @@ def partial(fn, arg):
 		return fn(arg)
 	
 	return wrapper
+
+def partial(fn, arg_1, arg_2=None, arg_3=None):
+	def wrapper():
+		if arg_3:
+			return fn(arg_1, arg_2, arg_3)
+		
+		elif arg_2:
+			return fn(arg_1, arg_2)
+		
+		return fn(arg_1)
+	
+	return wrapper
