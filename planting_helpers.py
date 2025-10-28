@@ -1,8 +1,15 @@
 from utils import should_till, get_xy, isEven
 
+
 def just_harvest():
 	if can_harvest():
 		harvest()
+		
+def if_sunflower_then_plant(curr_plant):
+    if can_harvest():
+        harvest()
+        if curr_plant == Entities.Sunflower:
+            plant(Entities.Sunflower)
 
 def check_harvest_plant(curr_plant):
 	if can_harvest():
@@ -17,7 +24,7 @@ def check_harvest_plant(curr_plant):
 		plant(curr_plant)
 		
  
-def sunflower_boost(curr_plant):
+def sunflower_boost(curr_plant, planting_fn=check_harvest_plant):
 	pos_x, pos_y = get_xy()
 	
 	should_plant_sunflower_top = (pos_y == (get_world_size() - 1) and isEven(pos_x))
@@ -25,10 +32,10 @@ def sunflower_boost(curr_plant):
 	if should_plant_sunflower_top or should_plant_sunflower_bottom:
 		curr_plant = Entities.Sunflower
 
-	check_harvest_plant(curr_plant)
+	planting_fn(curr_plant)
 
 
-def alternate_planting(planting_fn, plant_a, plant_b):
+def alternate_planting(plant_a, plant_b, planting_fn):
 	pos_x, pos_y = get_xy()
 
 	if isEven(pos_x):

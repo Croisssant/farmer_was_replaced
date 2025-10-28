@@ -1,4 +1,4 @@
-from targeted_move import limited_move_to, move_to_xy
+from move_to_coord import limited_move_to, move_to_xy
 from farm_traversal import traverse_plot_with_fn
 
 def plant_sunflower():

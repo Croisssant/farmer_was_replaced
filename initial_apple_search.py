@@ -1,4 +1,4 @@
-from targeted_move import limited_move_to
+from move_to_coord import limited_move_to
 
 def initial_apple_search(next_x, next_y):
 	EDGE = get_world_size() - 1
@@ -7,6 +7,7 @@ def initial_apple_search(next_x, next_y):
 		limited_move_to(next_y, "y")
 		limited_move_to(next_x, "x")
 		
+		# Recheck the apple's logic
 		if get_entity_type() == Entities.Apple:
 			next_x, next_y = measure()
 		

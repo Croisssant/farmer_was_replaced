@@ -1,5 +1,5 @@
 from multi_drone_util import multi_drone_await_fn, multi_drone_fn
-from targeted_move import move_to_xy	
+from move_to_coord import move_to_xy	
 def keep_moving():
 	while True:
 		move(East)

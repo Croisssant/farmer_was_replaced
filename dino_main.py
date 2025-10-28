@@ -1,7 +1,7 @@
 from initial_apple_search import initial_apple_search
 from farm_traversal import traverse_plot_with_fn
 from s_walk import s_walk_loop, traverse_plant_and_harvest_sunflower
-from targeted_move import move_to_xy
+from move_to_coord import move_to_xy
 
 init_x, init_y = (None, None)
 def get_first_apple_coords():

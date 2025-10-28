@@ -1,4 +1,4 @@
-from targeted_move import move_to_xy
+from move_to_coord import move_to_xy
 from multi_drone_util import multi_drone_await_fn
 
 def plant_bush():

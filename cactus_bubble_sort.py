@@ -1,5 +1,10 @@
-from targeted_move import move_to, move_to_xy
+from move_to_coord import move_to, move_to_xy
 
+def reset_position(original_pos, plane):
+	if plane == "x":
+		move_to(original_pos, "x")
+	else:
+		move_to(original_pos, "y")
 
 def bubble_sort(plane, measure_direction):
 	original_pos = get_pos_x()
@@ -9,25 +14,19 @@ def bubble_sort(plane, measure_direction):
 	
 	for i in range(unsorted_list_length):
 		swapped = False
-		for j in range(unsorted_list_length - i - 1):
+		for _ in range(unsorted_list_length - i - 1):
 			
 			if measure() > measure(measure_direction):
 				swap(measure_direction)
 				swapped = True
 				 
 			move(measure_direction)
-		# RESET POSITION
 		
-		if plane == "x":
-			move_to(original_pos, "x")
-		else:
-			move_to(original_pos, "y")
+		# RESET POSITION
+		reset_position(original_pos, plane)
 			
 		if swapped == False:
-			if plane == "x":
-				move_to(original_pos, "x")
-			else:
-				move_to(original_pos, "y")
+			reset_position(original_pos, plane)
 			break
 
 
