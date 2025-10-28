@@ -1,5 +1,9 @@
 from utils import should_till, get_xy, isEven
 
+def plant_weird_substance():
+	if can_harvest():
+		harvest()
+		use_item(Items.Fertilizer)
 
 def just_harvest():
 	if can_harvest():

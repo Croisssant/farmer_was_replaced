@@ -1,6 +1,6 @@
 from farm_traversal import traverse_plot_with_fn
 from planting_cactus import farming_cactus_loop
-from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant
+from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant, plant_weird_substance
 from utils import partial
 
 def farm_plant(planting_fn, target_amount, resource):
@@ -88,7 +88,7 @@ def resources_farming_controller(target_amount, resource):
             print()
 
         case Items.Weird_Substance:
-            print()
+            plant_weird_substance()
 
         case Items.Gold:
             print()

@@ -62,6 +62,7 @@ def farming_cactus_loop(target_amount):
 		move_to_xy(0, 0)
 		plant_cactus_field()
 		sort_cactus_field()
+		harvest()
 
 
 def multi_drone_farming_cactus_loop():

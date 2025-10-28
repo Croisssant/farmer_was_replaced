@@ -1,5 +1,9 @@
 TILL_PLANTS = [Entities.Carrot, Entities.Pumpkin, Entities.Sunflower, Entities.Cactus]
 
+def use_weird_substance_maze():
+	substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
+	use_item(Items.Weird_Substance, substance)
+
 def should_harvest():
 	if can_harvest():
 		harvest()
