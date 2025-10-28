@@ -1,3 +1,5 @@
+from utils import should_till, should_harvest, partial
+
 def multi_drone_await_fn(fn, move_direction):
 	active_drones = []
 	for _ in range(get_world_size()):
@@ -12,6 +14,7 @@ def multi_drone_await_fn(fn, move_direction):
 			
 	for drone in active_drones:
 		wait_for(drone)
+
 
 def multi_drone_fn(fn, move_direction):
 	for _ in range(get_world_size()):
@@ -33,4 +36,12 @@ def multi_drone_fn_split(fn_1, fn_2, move_direction):
 		if not drone_1:
 			fn_1()
 			
+		move(move_direction)
+
+
+def multi_drone_planting(curr_plant, move_direction):
+	for _ in range(get_world_size()):
+		should_harvest()
+		should_till(curr_plant)
+		plant(curr_plant)
 		move(move_direction)

@@ -1,4 +1,5 @@
 from farm_traversal import traverse_plot_with_fn
+from planting_cactus import farming_cactus_loop
 from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant
 from utils import partial
 
@@ -81,7 +82,7 @@ def resources_farming_controller(target_amount, resource):
             planting_controller(target_amount, resource)
 
         case Items.Cactus:
-            print()
+            farming_cactus_loop(target_amount)
 
         case Items.Bone:
             print()
