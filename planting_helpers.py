@@ -1,4 +1,10 @@
-from utils import should_till, get_xy, isEven
+from utils import should_till, get_xy, isEven, partial
+from farm_traversal import traverse_plot_with_fn
+
+
+def traverse_plant_and_harvest_sunflower():
+	traverse_plot_with_fn(partial(check_harvest_plant, Entities.Sunflower))
+	traverse_plot_with_fn(harvest)
 
 def plant_weird_substance():
 	if can_harvest():

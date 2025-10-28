@@ -1,3 +1,4 @@
+from dino_movements import farming_bones_loop
 from farm_traversal import traverse_plot_with_fn
 from planting_cactus import farming_cactus_loop
 from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant, plant_weird_substance
@@ -85,7 +86,7 @@ def resources_farming_controller(target_amount, resource):
             farming_cactus_loop(target_amount)
 
         case Items.Bone:
-            print()
+            farming_bones_loop(target_amount)
 
         case Items.Weird_Substance:
             plant_weird_substance()
