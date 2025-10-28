@@ -1,11 +1,15 @@
+from builtins import set
 from MazeUtil2 import create_maze
 from left_wall_huggers import drone_navigation_spawner_left_huggers
 from random_wall_huggers import drone_navigation_spawner_random_huggers
 from treasure_hunter import find_treasure
+from utils import partial
 
 directions = [North, East, South, West]
 
 def drone_navigating_fn(index, forward_direction):
+	move(forward_direction)
+
 	while True:
 		if get_entity_type() == Entities.Treasure:
 			harvest()
@@ -36,33 +40,6 @@ def drone_navigating_fn(index, forward_direction):
 			forward_direction = turnaround_direction
 			move(turnaround_direction)
 			
-def drone_navigating_fn_starting_north():
-	forward_direction = North
-	index = 0
-	move(forward_direction)
-	
-	drone_navigating_fn(index, forward_direction)
-	
-def drone_navigating_fn_starting_south():
-	forward_direction = South
-	index = 2
-	move(forward_direction)
-	
-	drone_navigating_fn(index, forward_direction)
-
-def drone_navigating_fn_starting_east():
-	forward_direction = East
-	index = 1
-	move(forward_direction)
-	
-	drone_navigating_fn(index, forward_direction)
-	
-def drone_navigating_fn_starting_west():
-	forward_direction = West
-	index = 3
-	move(forward_direction)
-	
-	drone_navigating_fn(index, forward_direction)
 
 def drone_navigation_spawner(direction):
 	rand_num = random() 
@@ -74,16 +51,16 @@ def drone_navigation_spawner(direction):
 		
 	else:
 		if direction == North:
-			spawn_drone(drone_navigating_fn_starting_north)
+			spawn_drone(partial(drone_navigating_fn, 0, North))
 		
 		if direction == South:
-			spawn_drone(drone_navigating_fn_starting_south)
+			spawn_drone(partial(drone_navigating_fn, 2, South))
 		
 		if direction == East:
-			spawn_drone(drone_navigating_fn_starting_east)
+			spawn_drone(partial(drone_navigating_fn, 1, East))
 		
 		if direction == West:
-			spawn_drone(drone_navigating_fn_starting_west)
+			spawn_drone(partial(drone_navigating_fn, 3, West))
 	
 		
 def spawn_new_drone_decider(idx, opp_turn_direction, visited):
