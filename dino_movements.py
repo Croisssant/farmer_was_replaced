@@ -82,7 +82,7 @@ def s_walk_loop():
 
 
 def farming_bones_loop(target_amount):
-    while target_amount < num_items(Items.Bone):
+    while num_items(Items.Bone) < target_amount:
         change_hat(Hats.Sunflower_Hat)
         move_to_xy(0, 0)
         traverse_plant_and_harvest_sunflower()

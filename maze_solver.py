@@ -12,19 +12,16 @@ DIRECTIONS_INDEX = {
 def create_maze():
 	clear()
 
-	if can_harvest():
-		harvest()
-		plant(Entities.Bush)
-
-	while get_entity_type() == Entities.Bush:
+	plant(Entities.Bush)
+		
+	if get_entity_type() == Entities.Bush:
 		substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
 
 		if num_items(Items.Weird_Substance) > substance:
 			use_item(Items.Weird_Substance, substance)
 			return 1
-	
-		else:
-			return 0
+		
+	return 0
 
 def calc_left_right(index):
 	turn_right_idx = (index + 1) % 4
@@ -179,8 +176,17 @@ def drone_master():
 			forward_direction = turnaround_direction
 			move(turnaround_direction)
 		
-
+		
 def maze_solver(target_amount):
+	change_hat(Hats.The_Farmers_Remains)
+	while num_items(Items.Gold) < target_amount:
+		if create_maze():
+			if drone_navigating_fn(North, right_wall_hugger):
+				continue
+		else:
+			break
+
+def multi_drone_maze_solver(target_amount):
 	change_hat(Hats.The_Farmers_Remains)
 	while num_items(Items.Gold) < target_amount:
 		if create_maze():

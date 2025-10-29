@@ -20,10 +20,11 @@ def just_harvest():
 		harvest()
 		
 def if_sunflower_then_plant(curr_plant):
-    if can_harvest():
-        harvest()
-        if curr_plant == Entities.Sunflower:
-            plant(Entities.Sunflower)
+	if can_harvest():
+		harvest()
+		if curr_plant == Entities.Sunflower:
+			should_till(curr_plant)
+			plant(curr_plant)
 
 def check_harvest_plant(curr_plant):
 	if can_harvest():
