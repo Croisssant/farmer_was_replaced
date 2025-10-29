@@ -1,7 +1,7 @@
 from farm_traversal import traverse_plot_with_fn
 from move_to_coord import move_to, move_to_xy
 from utils import should_till, partial
-from multi_drone_util import multi_drone_await_fn, multi_drone_planting
+from multi_drone_fn import multi_drone_await_fn, multi_drone_planting
 
 def reset_position(original_pos, plane):
 	if plane == "x":
@@ -65,13 +65,18 @@ def farming_cactus_loop(target_amount):
 		harvest()
 
 
-def multi_drone_farming_cactus_loop():
+def multi_drone_farming_cactus():
 	multi_drone_await_fn(partial(multi_drone_planting, Entities.Cactus, East), North)
 	multi_drone_await_fn(partial(bubble_sort, "x", East), North)
 	move_to_xy(0, 0)
 	multi_drone_await_fn(partial(bubble_sort, "y", North), East)
 	move_to_xy(0, 0)
 	harvest()
+
+
+def multi_drone_farming_cactus_loop(target_amount):
+	while num_items(Items.Cactus) < target_amount:
+		multi_drone_farming_cactus()
 
 
 if __name__ == "__main__": 

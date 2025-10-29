@@ -1,7 +1,7 @@
 from dino_movements import farming_bones_loop
 from farm_traversal import traverse_plot_with_fn
 from maze_solver import maze_solver
-from planting_cactus import farming_cactus_loop
+from planting_cactus import farming_cactus_loop, multi_drone_farming_cactus_loop
 from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant, farm_weird_substance
 from utils import partial
 
@@ -95,6 +95,29 @@ def resources_farming_controller(target_amount, resource):
         case Items.Gold:
             maze_solver(target_amount)
  
+
+def multi_drone_resources_farming_controller(target_amount, resource):
+    match resource:
+        case Items.Hay | Items.Carrot:
+            planting_controller(target_amount, resource)
+
+        case Items.Wood:
+            farming_cactus_loop(target_amount)
+
+        case Items.Pumpkin:
+            farming_cactus_loop(target_amount)
+
+        case Items.Cactus:
+            multi_drone_farming_cactus_loop(target_amount)
+
+        case Items.Bone:
+            farming_bones_loop(target_amount)
+
+        case Items.Weird_Substance:
+            farm_weird_substance(target_amount)
+
+        case Items.Gold:
+            maze_solver(target_amount)
             
 if __name__ == "__main__":
 	# References for calling these functions

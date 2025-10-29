@@ -68,3 +68,9 @@ def targeted_planting(plot_layout):
 	pos_x, pos_y = get_xy()
 	curr_plant = plot_layout[pos_y][pos_x]
 	check_harvest_plant(curr_plant)
+
+
+def water_n_times(n=5, moving_direction=East):
+	for _ in range(get_world_size() * n):
+		use_item(Items.Water)
+		move(moving_direction)
