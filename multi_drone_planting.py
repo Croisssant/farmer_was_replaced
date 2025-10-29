@@ -5,43 +5,43 @@ from multi_drone_fn import multi_drone_await_fn, multi_drone_fn_split
 
 # Just use polyculture with multi drone as it is much more worth it
 def polyculture_fn(target_item, target_amount, moving_direction=West):
-    move(moving_direction)
+	move(moving_direction)
 
-    while num_items(target_item) < target_amount:
-        original_x_pos, original_y_pos = get_xy()
-        polyculture_data = get_companion()
-        
-        if polyculture_data:
-            plant_type, (x, y) = polyculture_data
-            move_to_xy(x, y)
-            just_harvest()
-            should_till(plant_type)
-            plant(plant_type)
-            move_to_xy(original_x_pos, original_y_pos)
-        
-        move(moving_direction)
+	while num_items(target_item) < target_amount:
+		original_x_pos, original_y_pos = get_xy()
+		polyculture_data = get_companion()
+		
+		if polyculture_data:
+			plant_type, (x, y) = polyculture_data
+			move_to_xy(x, y)
+			just_harvest()
+			should_till(plant_type)
+			plant(plant_type)
+			move_to_xy(original_x_pos, original_y_pos)
+		
+		move(moving_direction)
 		
 
 # Specialized polyculture function to target trees
 def polyculture_fn_targeted(target_item, target_amount, target_entity=Entities.Tree, moving_direction=West):
-    move(moving_direction)
+	move(moving_direction)
 
-    while num_items(target_item) < target_amount:
-        original_x_pos, original_y_pos = get_xy()
-        curr_entity = get_entity_type()
-        
-        if curr_entity == target_entity:
-            polyculture_data = get_companion()
-            
-            if polyculture_data:
-                plant_type, (x, y) = polyculture_data
-                move_to_xy(x, y)
-                just_harvest()
-                should_till(plant_type)
-                plant(plant_type)
-                move_to_xy(original_x_pos, original_y_pos)
-        
-        move(moving_direction)
+	while num_items(target_item) < target_amount:
+		original_x_pos, original_y_pos = get_xy()
+		curr_entity = get_entity_type()
+		
+		if curr_entity == target_entity:
+			polyculture_data = get_companion()
+			
+			if polyculture_data:
+				plant_type, (x, y) = polyculture_data
+				move_to_xy(x, y)
+				just_harvest()
+				should_till(plant_type)
+				plant(plant_type)
+				move_to_xy(original_x_pos, original_y_pos)
+		
+		move(moving_direction)
 		
 
 def multi_drone_planting_wrapper(curr_plant, target_item, target_amount, planting_fn=check_harvest_plant, moving_direction=East):
@@ -69,14 +69,14 @@ def farm_weird_substance(target_amount):
 			move(East)
 			
 def harvest_and_plant_wood(target_amount):
-    while num_items(Items.Wood) < target_amount:
-        for i in range(get_world_size()):
-            curr_plant = Entities.Tree
-            if i % 2 == 0:
-                curr_plant = Entities.Bush
-                
-            check_harvest_plant(curr_plant)
-            move(East)
+	while num_items(Items.Wood) < target_amount:
+		for i in range(get_world_size()):
+			curr_plant = Entities.Tree
+			if i % 2 == 0:
+				curr_plant = Entities.Bush
+				
+			check_harvest_plant(curr_plant)
+			move(East)
 				
 		
 def plant_while_sufficient_water_loop(curr_plant, moving_direction=East):

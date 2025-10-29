@@ -1,5 +1,5 @@
 from move_to_coord import move_to_xy
-from multi_drone_fn import multi_drone_fn_with_original_fn
+from multi_drone_fn import multi_drone_await_fn, multi_drone_fn_with_original_fn
 from utils import partial
 
 def plant_pumpkin_loop(target_amount):
@@ -14,8 +14,13 @@ def plant_healthy_pumpkins():
 		all_healthy = True
 		
 		# Do an additional check for just planted pumpkins (where it is missed sometimes)
-		for _ in range(get_world_size() + 1):
-			if get_entity_type() in [Entities.Dead_Pumpkin, None]:
+		# The current bug is that the check still continues while just planted pumpkins
+		# are still growing, hence they're missed during the checks. 
+		# Current solution now is just to check the row 4 times, where it's about the same time as allowing
+		# the just planted pumpkins to grow.
+		# Future improved solution, await for just planted pumpkin before the next check?
+		for _ in range(get_world_size() * 4):
+			if get_entity_type() != Entities.Pumpkin:
 				plant(Entities.Pumpkin)
 				all_healthy= False
 				
@@ -47,6 +52,15 @@ def pumpkin_merge_check(target_amount):
 				harvest()
 				break
 
+def plant_pumpkin():
+	for _ in range(get_world_size()):
+		if can_harvest():
+			harvest()
+		if get_ground_type() != Grounds.Soil:
+			till()
+		plant(Entities.Pumpkin)
+		move(East)
 
-def multi_drone_pumpkin_farming(target_amount):		
+def multi_drone_pumpkin_farming(target_amount):
+	multi_drone_await_fn(plant_pumpkin, North)
 	multi_drone_fn_with_original_fn(partial(plant_pumpkin_loop, target_amount), partial(pumpkin_merge_check, target_amount), North)
