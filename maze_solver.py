@@ -179,7 +179,16 @@ def drone_master():
 			forward_direction = turnaround_direction
 			move(turnaround_direction)
 		
-	
+
+def maze_solver(target_amount):
+	change_hat(Hats.The_Farmers_Remains)
+	while num_items(Items.Gold) < target_amount:
+		if create_maze():
+			if drone_master():
+				continue
+		else:
+			break
+
 if __name__ == "__main__":
 	change_hat(Hats.The_Farmers_Remains)
 	while True:

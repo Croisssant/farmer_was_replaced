@@ -11,6 +11,10 @@ def plant_weird_substance():
 		harvest()
 		use_item(Items.Fertilizer)
 
+def farm_weird_substance(target_amount):
+	while num_items(Items.Weird_Substance) < target_amount:
+		traverse_plot_with_fn(plant_weird_substance)
+
 def just_harvest():
 	if can_harvest():
 		harvest()
