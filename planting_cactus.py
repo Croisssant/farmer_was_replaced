@@ -74,7 +74,7 @@ def multi_drone_farming_cactus():
 	harvest()
 
 
-def multi_drone_farming_cactus_loop(target_amount):
+def multi_drone_cactus_farming_loop(target_amount):
 	while num_items(Items.Cactus) < target_amount:
 		multi_drone_farming_cactus()
 

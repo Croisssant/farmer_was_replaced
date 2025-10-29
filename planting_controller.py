@@ -1,8 +1,11 @@
 from dino_movements import farming_bones_loop
+from farm_gold import multi_drone_gold_farming
 from farm_traversal import traverse_plot_with_fn
 from maze_solver import maze_solver
-from planting_cactus import farming_cactus_loop, multi_drone_farming_cactus_loop
+from multi_drone_planting import multi_drone_plant_farming, multi_drone_weird_substance_farming, multi_drone_wood_farming
+from planting_cactus import farming_cactus_loop, multi_drone_cactus_farming_loop
 from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant, farm_weird_substance
+from planting_pumpkin import multi_drone_pumpkin_farming
 from utils import partial
 
 def farm_plant(planting_fn, target_amount, resource):
@@ -98,26 +101,29 @@ def resources_farming_controller(target_amount, resource):
 
 def multi_drone_resources_farming_controller(target_amount, resource):
     match resource:
-        case Items.Hay | Items.Carrot:
-            planting_controller(target_amount, resource)
+        case Items.Hay:
+            multi_drone_plant_farming(Entities.Grass, resource, target_amount)
+
+        case Items.Carrot:
+            multi_drone_plant_farming(Entities.Carrot, resource, target_amount)
 
         case Items.Wood:
-            farming_cactus_loop(target_amount)
+            multi_drone_wood_farming(resource, target_amount)
 
         case Items.Pumpkin:
-            farming_cactus_loop(target_amount)
+            multi_drone_pumpkin_farming(target_amount)
 
         case Items.Cactus:
-            multi_drone_farming_cactus_loop(target_amount)
+            multi_drone_cactus_farming_loop(target_amount)
 
         case Items.Bone:
             farming_bones_loop(target_amount)
 
         case Items.Weird_Substance:
-            farm_weird_substance(target_amount)
+            multi_drone_weird_substance_farming(target_amount)
 
         case Items.Gold:
-            maze_solver(target_amount)
+            multi_drone_gold_farming(target_amount)
             
 if __name__ == "__main__":
 	# References for calling these functions

@@ -48,5 +48,5 @@ def pumpkin_merge_check(target_amount):
 				break
 
 
-def multi_drone_farm_pumpkins(target_amount):		
+def multi_drone_pumpkin_farming(target_amount):		
 	multi_drone_fn_with_original_fn(partial(plant_pumpkin_loop, target_amount), partial(pumpkin_merge_check, target_amount), North)

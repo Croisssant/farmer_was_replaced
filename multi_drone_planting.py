@@ -4,10 +4,10 @@ from utils import partial, should_till, get_xy
 from multi_drone_fn import multi_drone_await_fn, multi_drone_fn_split
 
 # Just use polyculture with multi drone as it is much more worth it
-def polyculture_fn(moving_direction=West):
+def polyculture_fn(target_item, target_amount, moving_direction=West):
     move(moving_direction)
 
-    while True:
+    while num_items(target_item) < target_amount:
         original_x_pos, original_y_pos = get_xy()
         polyculture_data = get_companion()
         
@@ -23,10 +23,10 @@ def polyculture_fn(moving_direction=West):
 		
 
 # Specialized polyculture function to target trees
-def polyculture_fn_targeted(moving_direction=West, target_entity=Entities.Tree):
+def polyculture_fn_targeted(target_item, target_amount, target_entity=Entities.Tree, moving_direction=West):
     move(moving_direction)
 
-    while True:
+    while num_items(target_item) < target_amount:
         original_x_pos, original_y_pos = get_xy()
         curr_entity = get_entity_type()
         
@@ -44,14 +44,14 @@ def polyculture_fn_targeted(moving_direction=West, target_entity=Entities.Tree):
         move(moving_direction)
 		
 
-def multi_drone_planting_wrapper(curr_plant, planting_fn=check_harvest_plant, moving_direction=East):
-	while True:
+def multi_drone_planting_wrapper(curr_plant, target_item, target_amount, planting_fn=check_harvest_plant, moving_direction=East):
+	while num_items(target_item) < target_amount:
 		planting_fn(curr_plant)
 		move(moving_direction)
 		
 
-def farm_weird_substance():
-	while True:
+def farm_weird_substance(target_amount):
+	while num_items(Items.Weird_Substance) < target_amount:
 		for i in range(get_world_size()):
 			curr_plant = Entities.Tree
 			if i % 2 == 0:
@@ -68,8 +68,8 @@ def farm_weird_substance():
 				
 			move(East)
 			
-def harvest_and_plant_wood():
-    while True:
+def harvest_and_plant_wood(target_amount):
+    while num_items(Items.Wood) < target_amount:
         for i in range(get_world_size()):
             curr_plant = Entities.Tree
             if i % 2 == 0:
@@ -85,13 +85,20 @@ def plant_while_sufficient_water_loop(curr_plant, moving_direction=East):
 		move(moving_direction)
 
 
-def water_and_plant_loop(curr_plant):
-	while True:
+def water_and_plant_loop(curr_plant, curr_item, target_amount):
+	while num_items(curr_item) < target_amount:
 		move_to_xy(0, 0)
 		multi_drone_await_fn(water_n_times, North)
 		multi_drone_await_fn(partial(plant_while_sufficient_water_loop, curr_plant), North)
 		
 
-if __name__ == "__main__":
-	# multi_drone_fn(water_10_times, North)
-	multi_drone_fn_split(harvest_and_plant_wood, polyculture_fn, North)
+def multi_drone_plant_farming(curr_plant, target_item, target_amount):
+	multi_drone_fn_split(partial(multi_drone_planting_wrapper, curr_plant, target_item, target_amount), partial(polyculture_fn, target_item, target_amount), North)
+
+
+def multi_drone_wood_farming(target_item, target_amount):
+	multi_drone_fn_split(partial(harvest_and_plant_wood, target_amount), partial(polyculture_fn_targeted, target_item, target_amount), North)
+	
+
+def multi_drone_weird_substance_farming(target_item, target_amount):
+	multi_drone_fn_split(partial(farm_weird_substance, target_amount), partial(polyculture_fn_targeted, target_item, target_amount), North)
