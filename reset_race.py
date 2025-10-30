@@ -1,3 +1,4 @@
+from builtins import dict, sorted
 from planting_controller import resources_farming_controller, multi_drone_resources_farming_controller
 
 items_with_underlying_cost = [Items.Carrot, Items.Pumpkin, Items.Cactus, Items.Gold, Items.Bone]
@@ -15,7 +16,7 @@ items_with_underlying_cost = [Items.Carrot, Items.Pumpkin, Items.Cactus, Items.G
 def reset_race(unlocks_sequence):
 	for unlocks, num in unlocks_sequence:
 		cost =  get_cost(unlocks, num)
-		calculate_underlying_cost(cost)
+		calculate_total_cost(cost)
 
 
 def recursive_get_cost(item, amount, cost_accumulated=None):
@@ -38,12 +39,14 @@ def recursive_get_cost(item, amount, cost_accumulated=None):
 		
 		return cost_accumulated
 	
-
-
 	else:
+		# Add the current item itself to show intermediate requirements
+		if item in cost_accumulated:
+			cost_accumulated[item] = cost_accumulated[item] + amount
+		else:
+			cost_accumulated[item] = amount
+		
 		underlying_cost = get_cost(items_to_entity[item])
-		#print("Under")
-		#print(underlying_cost)
 		for underlying_items in underlying_cost:
 			cost_accumulated = recursive_get_cost(underlying_items, underlying_cost[underlying_items] * amount, cost_accumulated)
 			
@@ -51,23 +54,24 @@ def recursive_get_cost(item, amount, cost_accumulated=None):
 	
 	return cost_accumulated
 	
-def calculate_underlying_cost(cost):
+def calculate_total_cost(cost):
 	total_cost = {}
 
+	# Process each original item
 	for item in cost:
 		quantity = cost[item]
 		if item in items_with_underlying_cost:
-			total_cost[item] = cost[item]
-			further_underlying_cost = recursive_get_cost(item, quantity)
-
-			for further_item in further_underlying_cost:
-				further_item_quantity = further_underlying_cost[further_item]
-				if further_item in total_cost:
-					total_cost[further_item] = total_cost[further_item] + further_item_quantity
+			# For items with underlying costs, use recursive_get_cost (which includes the item itself)
+			recursive_cost = recursive_get_cost(item, quantity)
+			
+			for recursive_item in recursive_cost:
+				recursive_quantity = recursive_cost[recursive_item]
+				if recursive_item in total_cost:
+					total_cost[recursive_item] = total_cost[recursive_item] + recursive_quantity
 				else:
-					total_cost[further_item] = further_item_quantity
-		
+					total_cost[recursive_item] = recursive_quantity
 		else:
+			# For items without underlying costs, just add them directly
 			if item in total_cost:
 				total_cost[item] = total_cost[item] + quantity
 			else:
@@ -77,7 +81,7 @@ def calculate_underlying_cost(cost):
 # => { Items.Wood: 1524, Items.Carrot: 200, Items.Hay: 1024, Items.Pumpkin: 100 }
 
 # Answer should be
-# => { Items.Wood: 26214900, Items.Carrot: 51200, Items.Hay: 26214400, Items.Pumpkin: 100 }
+# => { Items.Wood: 26317300, Items.Carrot: 51400, Items.Hay: 26316800, Items.Pumpkin: 100 }
 
 # print(get_cost(Entities.Carrot)) => { Items.Wood: 512, Items.Hay: 512 }
 # print(get_cost(Entities.Pumpkin)) => { Items.Carrot: 512 }
@@ -97,4 +101,25 @@ def calculate_underlying_cost(cost):
 
 
 # calculate_underlying_cost(get_cost(Unlocks.Pumpkins, 0))
-print(calculate_underlying_cost({ Items.Wood: 500, Items.Carrot: 200, Items.Pumpkin: 100 }))
+print(calculate_total_cost({ Items.Wood: 500, Items.Carrot: 200, Items.Pumpkin: 100 }))
+# => { Items.Wood: 102900, Items.Hay: 102400, Items.Carrot: 200 }
+
+
+
+def compute_farming_sequence(total_cost):
+    custom_order = [Items.Hay, Items.Wood, Items.Carrot]
+    reordered = {}
+
+    # First, add the items that are in your custom order
+    for key in custom_order:
+        if key in total_cost:
+            reordered[key] = total_cost[key]
+
+    # Then, add everything else (in their original order)
+    for key, value in total_cost.items():
+        if key not in custom_order:
+            reordered[key] = value
+
+    return reordered
+
+compute_farming_sequence({ Items.Hay: 26316800, Items.Pumpkin: 100, Items.Wood: 26317300, Items.Carrot: 51400 })
