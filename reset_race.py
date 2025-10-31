@@ -3,22 +3,6 @@ from planting_controller import resources_farming_controller, multi_drone_resour
 
 items_with_underlying_cost = [Items.Carrot, Items.Pumpkin, Items.Cactus, Items.Gold, Items.Bone]
 
-# Prints a dictionary of total cost
-#total_cost = get_cost(Unlocks.Cactus, 0)
-#print(total_cost)
-
-
-# Prints the cost of planting a carrot, therefore, before the final loop, multiply each needed resource with carrot(the target), then first farm for the required basic resources
-# then only farm for carrot
-#print(get_cost(Entities.Pumpkin))
-
-
-def reset_race(unlocks_sequence):
-	for unlocks, num in unlocks_sequence:
-		cost =  get_cost(unlocks, num)
-		calculate_total_cost(cost)
-
-
 def recursive_get_cost(item, amount, cost_accumulated=None):
 	items_to_entity = {
 		Items.Carrot: Entities.Carrot,
@@ -40,6 +24,15 @@ def recursive_get_cost(item, amount, cost_accumulated=None):
 		return cost_accumulated
 	
 	else:
+
+		# Special Case for Items.Gold
+		if item == Items.Gold:
+			substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
+			cost_accumulated[Items.Weird_Substance] = substance
+			cost_accumulated[item] = amount
+
+			return cost_accumulated
+
 		# Add the current item itself to show intermediate requirements
 		if item in cost_accumulated:
 			cost_accumulated[item] = cost_accumulated[item] + amount
@@ -49,11 +42,10 @@ def recursive_get_cost(item, amount, cost_accumulated=None):
 		underlying_cost = get_cost(items_to_entity[item])
 		for underlying_items in underlying_cost:
 			cost_accumulated = recursive_get_cost(underlying_items, underlying_cost[underlying_items] * amount, cost_accumulated)
-			
-
 	
 	return cost_accumulated
 	
+
 def calculate_total_cost(cost):
 	total_cost = {}
 
@@ -78,48 +70,48 @@ def calculate_total_cost(cost):
 				total_cost[item] = quantity
 
 	return total_cost
-# => { Items.Wood: 1524, Items.Carrot: 200, Items.Hay: 1024, Items.Pumpkin: 100 }
-
-# Answer should be
-# => { Items.Wood: 26317300, Items.Carrot: 51400, Items.Hay: 26316800, Items.Pumpkin: 100 }
-
-# print(get_cost(Entities.Carrot)) => { Items.Wood: 512, Items.Hay: 512 }
-# print(get_cost(Entities.Pumpkin)) => { Items.Carrot: 512 }
-# for item in total_cost:
-#     print(item)
-#     print(total_cost[item])
-# clear()
-# set_world_size(16)
-# multi_drone_resources_farming_controller(85500000000000, Items.Gold)
-
-
-# reset_race([
-# 	#(Unlocks.Cactus, 0), 
-# 	(Unlocks.Pumpkins, 0)
-# ])
-
-
-
-# calculate_underlying_cost(get_cost(Unlocks.Pumpkins, 0))
-print(calculate_total_cost({ Items.Wood: 500, Items.Carrot: 200, Items.Pumpkin: 100 }))
-# => { Items.Wood: 102900, Items.Hay: 102400, Items.Carrot: 200 }
-
 
 
 def compute_farming_sequence(total_cost):
-    custom_order = [Items.Hay, Items.Wood, Items.Carrot]
+    custom_order = [Items.Weird_Substance, Items.Hay, Items.Wood, Items.Carrot, Items.Pumpkin, Items.Cactus, Items.Bone, Items.Gold]
     reordered = {}
 
-    # First, add the items that are in your custom order
+    # First, add the items that are in the custom order
     for key in custom_order:
         if key in total_cost:
             reordered[key] = total_cost[key]
 
     # Then, add everything else (in their original order)
-    for key, value in total_cost.items():
+    for key in total_cost:
+        value = total_cost[key]  # Corrected indentation here
         if key not in custom_order:
             reordered[key] = value
 
     return reordered
 
 compute_farming_sequence({ Items.Hay: 26316800, Items.Pumpkin: 100, Items.Wood: 26317300, Items.Carrot: 51400 })
+
+
+def reset_race(unlocks_sequence):
+	for unlocks, num in unlocks_sequence:
+		total_cost =  compute_farming_sequence(calculate_total_cost(get_cost(unlocks, num)))
+		
+		while not unlock(unlocks):
+			for item in total_cost:
+				quantity = total_cost[item]
+
+				if num_unlocked(Unlocks.Megafarm) == 0:
+					resources_farming_controller(quantity, item)
+				else:
+					multi_drone_resources_farming_controller(quantity, item)
+		
+
+if __name__ == "__main__":
+	reset_race([
+		(Unlocks.Plant, 0),
+		(Unlocks.Carrots, 0),
+		(Unlocks.Expand, 0),
+		(Unlocks.Expand, 1),
+		(Unlocks.Trees, 0),
+		(Unlocks.Expand, 2),
+	])
