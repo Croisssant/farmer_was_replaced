@@ -5,7 +5,7 @@ from maze_solver import maze_solver
 from multi_drone_planting import multi_drone_plant_farming, multi_drone_weird_substance_farming, multi_drone_wood_farming
 from planting_cactus import farming_cactus_loop, multi_drone_cactus_farming_loop
 from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant, farm_weird_substance
-from planting_pumpkin import multi_drone_pumpkin_farming
+from planting_pumpkin import multi_drone_pumpkin_farming, single_drone_pumpkin_farming
 from utils import partial
 
 def farm_plant(planting_fn, target_amount, resource):
@@ -43,11 +43,12 @@ def planting_controller(target_amount, resource):
 			)
 
 		elif resource == Items.Pumpkin:
-			farm_plant(
-				partial(check_harvest_plant, Entities.Pumpkin),
-				target_amount,
-				resource
-			)
+			single_drone_pumpkin_farming(target_amount, resource)
+			# farm_plant(
+			# 	partial(check_harvest_plant, Entities.Pumpkin),
+			# 	target_amount,
+			# 	resource
+			# )
 					 
 	else:
 		if resource == Items.Hay:
@@ -80,6 +81,7 @@ def planting_controller(target_amount, resource):
 			   
 		
 def resources_farming_controller(target_amount, resource):
+	#clear()
 	if resource in [Items.Hay, Items.Wood, Items.Carrot, Items.Pumpkin]:
 		planting_controller(target_amount, resource)
 
@@ -97,7 +99,7 @@ def resources_farming_controller(target_amount, resource):
  
 
 def multi_drone_resources_farming_controller(target_amount, resource):
- 
+	#clear()
 	if resource == Items.Hay:
 		multi_drone_plant_farming(Entities.Grass, resource, target_amount)
 

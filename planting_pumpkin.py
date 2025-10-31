@@ -1,5 +1,7 @@
+from farm_traversal import traverse_plot_with_fn
 from move_to_coord import move_to_xy
 from multi_drone_fn import multi_drone_await_fn, multi_drone_fn_with_original_fn
+from planting_helpers import check_harvest_plant
 from utils import partial
 
 def plant_pumpkin_loop(target_amount):
@@ -61,6 +63,36 @@ def plant_pumpkin():
 		plant(Entities.Pumpkin)
 		move(East)
 
+
 def multi_drone_pumpkin_farming(target_amount):
 	multi_drone_await_fn(plant_pumpkin, North)
 	multi_drone_fn_with_original_fn(partial(plant_pumpkin_loop, target_amount), partial(pumpkin_merge_check, target_amount), North)
+
+
+def replace_bad_pumpkins():
+	if get_entity_type() in [Entities.Dead_Pumpkin, None]:
+		if get_ground_type() != Grounds.Soil:
+			till()
+		plant(Entities.Pumpkin) 
+
+def just_plant_pumpkin():
+	if get_ground_type() != Grounds.Soil:
+		till()
+	plant(Entities.Pumpkin)
+
+def single_drone_pumpkin_farming(target_amount, resource):
+	while num_items(resource) < target_amount:
+		traverse_plot_with_fn(just_plant_pumpkin)
+		move_to_xy(0, 0)
+		bottom_left_id = measure()
+		move_to_xy(get_world_size() - 1, get_world_size() - 1)
+		top_right_id = measure()
+
+		while bottom_left_id != top_right_id:
+			traverse_plot_with_fn(replace_bad_pumpkins)
+			move_to_xy(0, 0)
+			bottom_left_id = measure()
+			move_to_xy(get_world_size() - 1, get_world_size() - 1)
+			top_right_id = measure()
+
+		harvest()

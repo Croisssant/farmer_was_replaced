@@ -73,21 +73,21 @@ def calculate_total_cost(cost):
 
 
 def compute_farming_sequence(total_cost):
-    custom_order = [Items.Weird_Substance, Items.Hay, Items.Wood, Items.Carrot, Items.Pumpkin, Items.Cactus, Items.Bone, Items.Gold]
-    reordered = {}
+	custom_order = [Items.Weird_Substance, Items.Hay, Items.Wood, Items.Carrot, Items.Pumpkin, Items.Cactus, Items.Bone, Items.Gold]
+	reordered = {}
 
-    # First, add the items that are in the custom order
-    for key in custom_order:
-        if key in total_cost:
-            reordered[key] = total_cost[key]
+	# First, add the items that are in the custom order
+	for key in custom_order:
+		if key in total_cost:
+			reordered[key] = total_cost[key]
 
-    # Then, add everything else (in their original order)
-    for key in total_cost:
-        value = total_cost[key]  # Corrected indentation here
-        if key not in custom_order:
-            reordered[key] = value
+	# Then, add everything else (in their original order)
+	for key in total_cost:
+		value = total_cost[key]  # Corrected indentation here
+		if key not in custom_order:
+			reordered[key] = value
 
-    return reordered
+	return reordered
 
 compute_farming_sequence({ Items.Hay: 26316800, Items.Pumpkin: 100, Items.Wood: 26317300, Items.Carrot: 51400 })
 
@@ -97,9 +97,12 @@ def reset_race(unlocks_sequence):
 		total_cost =  compute_farming_sequence(calculate_total_cost(get_cost(unlocks, num)))
 		
 		while not unlock(unlocks):
+			quick_print("Unlocking: ")
+			quick_print(unlocks)
+			quick_print(num)
 			for item in total_cost:
 				quantity = total_cost[item]
-
+				clear()
 				if num_unlocked(Unlocks.Megafarm) == 0:
 					resources_farming_controller(quantity, item)
 				else:
@@ -109,9 +112,43 @@ def reset_race(unlocks_sequence):
 if __name__ == "__main__":
 	reset_race([
 		(Unlocks.Plant, 0),
-		(Unlocks.Carrots, 0),
 		(Unlocks.Expand, 0),
+		(Unlocks.Speed, 0),
+		(Unlocks.Carrots, 0),
 		(Unlocks.Expand, 1),
 		(Unlocks.Trees, 0),
 		(Unlocks.Expand, 2),
+		(Unlocks.Speed, 1),
+		(Unlocks.Speed, 2),
+		(Unlocks.Speed, 3),
+		(Unlocks.Grass, 1),
+		(Unlocks.Grass, 2),
+		(Unlocks.Trees, 1),
+		(Unlocks.Trees, 2),
+
+		(Unlocks.Grass, 3),
+		(Unlocks.Trees, 3),
+		(Unlocks.Carrots, 1),
+		
+		(Unlocks.Grass, 4),
+		(Unlocks.Trees, 4),
+		(Unlocks.Carrots, 2),
+		(Unlocks.Carrots, 3),
+		(Unlocks.Carrots, 4),
+		(Unlocks.Speed, 4),
+
+		(Unlocks.Pumpkins, 0),
+		(Unlocks.Watering, 0),
+		(Unlocks.Fertilizer, 0),
+		#(Unlocks.Sunflowers, 0),
+		(Unlocks.Cactus, 0),
+		(Unlocks.Expand, 3),
+		(Unlocks.Expand, 4),
+		(Unlocks.Expand, 5),
+		# Upgrade Hay and Wood here again
+		(Unlocks.Dinosaurs, 5),
+		(Unlocks.Mazes, 0),
+		(Unlocks.Leaderboard, 0),
+		# (Unlocks.Expand, 6),
+
 	])
