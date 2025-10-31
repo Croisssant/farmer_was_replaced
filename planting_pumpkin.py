@@ -98,3 +98,20 @@ def single_drone_pumpkin_farming(target_amount, resource):
 			top_right_id = measure()
 
 		harvest()
+
+
+def pumpkin_farming():
+	traverse_plot_with_fn(just_plant_pumpkin)
+	move_to_xy(0, 0)
+	bottom_left_id = measure()
+	move_to_xy(get_world_size() - 1, get_world_size() - 1)
+	top_right_id = measure()
+
+	while bottom_left_id != top_right_id:
+		traverse_plot_with_fn(replace_bad_pumpkins)
+		move_to_xy(0, 0)
+		bottom_left_id = measure()
+		move_to_xy(get_world_size() - 1, get_world_size() - 1)
+		top_right_id = measure()
+
+	harvest()

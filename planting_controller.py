@@ -103,7 +103,7 @@ def multi_drone_resources_farming_controller(target_amount, resource):
 	quick_print("Currently Require: ")
 	quick_print(resource)
 	quick_print(target_amount)
-    
+	
 	if resource == Items.Hay:
 		multi_drone_plant_farming(Entities.Grass, resource, target_amount)
 
@@ -129,7 +129,7 @@ def multi_drone_resources_farming_controller(target_amount, resource):
 		if max_drones() < 5:
 			multi_drone_maze_solver(target_amount)
 		else:
-		    multi_drone_gold_farming(target_amount)
+			multi_drone_gold_farming(target_amount)
 			
 if __name__ == "__main__":
 	# References for calling these functions

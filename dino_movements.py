@@ -83,7 +83,7 @@ def s_walk_loop():
 
 def farming_bones_loop(target_amount):
 	while num_items(Items.Bone) < target_amount:
-		change_hat(Hats.Sunflower_Hat)
+		change_hat(Hats.Straw_Hat)
 		move_to_xy(0, 0)
 		traverse_plant_and_harvest_sunflower()
 		
@@ -91,3 +91,13 @@ def farming_bones_loop(target_amount):
 		init_x, init_y = get_first_apple_coords()
 		initial_apple_search(init_x, init_y)
 		s_walk_loop()
+
+
+def farm_bones():
+	change_hat(Hats.Brown_Hat)
+	move_to_xy(0, 0)
+	
+	change_hat(Hats.Dinosaur_Hat)
+	init_x, init_y = get_first_apple_coords()
+	initial_apple_search(init_x, init_y)
+	s_walk_loop()

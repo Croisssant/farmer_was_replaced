@@ -18,19 +18,16 @@ def create_maze():
 	if get_entity_type() == Entities.Bush:
 		substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
 
+		if num_items(Items.Weird_Substance) < substance:
+			while num_items(Items.Weird_Substance) < substance:
+				quick_print("Number of Substance needed")
+				quick_print(substance)
+				farm_weird_substance(substance)
+
 		if num_items(Items.Weird_Substance) >= substance:
 			use_item(Items.Weird_Substance, substance)
 			return 1
-		
-		else:
-			#num_gold_required = target_amount - num_items(Items.Gold)
-			# quick_print("Number of Substance needed")
-			# quick_print(substance)
-			if num_unlocked(Unlocks.Megafarm) == 0 or num_unlocked(Unlocks.Polyculture) == 0:
-				farm_weird_substance(substance)
-			else:
-				multi_drone_weird_substance_farming(Items.Weird_Substance, substance)
-		
+			
 
 def calc_left_right(index):
 	turn_right_idx = (index + 1) % 4

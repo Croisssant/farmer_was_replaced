@@ -1,5 +1,12 @@
 from builtins import dict, sorted
+from dino_movements import farm_bones
+from farm_traversal import traverse_plot_with_fn
+from maze_solver import maze_solver
+from planting_cactus import farm_cactus
 from planting_controller import resources_farming_controller, multi_drone_resources_farming_controller
+from planting_helpers import alternate_planting, check_harvest_plant, just_harvest
+from planting_pumpkin import pumpkin_farming
+from utils import partial
 
 items_with_underlying_cost = [Items.Carrot, Items.Pumpkin, Items.Cactus, Items.Gold, Items.Bone]
 
@@ -169,15 +176,15 @@ if __name__ == "__main__":
 		(Unlocks.Dinosaurs, 0),
 		(Unlocks.Mazes, 0),
 
-		(Unlocks.Megafarm, 0),
-		(Unlocks.Megafarm, 1),
-		(Unlocks.Megafarm, 2),
-		(Unlocks.Megafarm, 3),
-		(Unlocks.Megafarm, 4),
+		# (Unlocks.Megafarm, 0),
+		# (Unlocks.Megafarm, 1),
+		# (Unlocks.Megafarm, 2),
+		# (Unlocks.Megafarm, 3),
+		# (Unlocks.Megafarm, 4),
 
-		(Unlocks.Polyculture, 0),
-		(Unlocks.Expand, 5),
-		(Unlocks.Expand, 6),
+		# (Unlocks.Polyculture, 0),
+		# (Unlocks.Expand, 5),
+		# (Unlocks.Expand, 6),
 		
 		(Unlocks.Trees, 7),
 		(Unlocks.Grass, 7),
@@ -191,7 +198,30 @@ if __name__ == "__main__":
 		(Unlocks.Trees, 9),
 		(Unlocks.Carrots, 9),
 
-		(Unlocks.Leaderboard, 0),
+		# (Unlocks.Leaderboard, 0),
 		# (Unlocks.Expand, 6),
-
 	])
+	clear()
+	traverse_plot_with_fn(just_harvest)
+	
+	clear()
+	traverse_plot_with_fn(partial(alternate_planting, Entities.Tree, Entities.Bush, check_harvest_plant))
+	traverse_plot_with_fn(just_harvest)
+
+	clear()
+	traverse_plot_with_fn(partial(check_harvest_plant, Entities.Carrot))
+	traverse_plot_with_fn(just_harvest)
+
+	clear()
+	for _ in range(6):
+		pumpkin_farming()
+
+	for _ in range(16):
+		farm_cactus()
+
+	for _ in range(512):
+		farm_bones()
+
+	clear()
+	maze_solver(1000000)
+	unlock(Unlocks.Leaderboard)
