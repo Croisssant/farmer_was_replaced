@@ -21,7 +21,7 @@ def plant_healthy_pumpkins():
 		# Current solution now is just to check the row 4 times, where it's about the same time as allowing
 		# the just planted pumpkins to grow.
 		# Future improved solution, await for just planted pumpkin before the next check?
-		for _ in range(get_world_size() * 4):
+		for _ in range(get_world_size()):
 			if get_entity_type() != Entities.Pumpkin:
 				plant(Entities.Pumpkin)
 				all_healthy= False
@@ -53,6 +53,8 @@ def pumpkin_merge_check(target_amount):
 			if check_row_merge():
 				harvest()
 				break
+			else:
+				plant_healthy_pumpkins()
 
 def plant_pumpkin():
 	for _ in range(get_world_size()):

@@ -1,4 +1,5 @@
 from builtins import set
+from multi_drone_planting import farm_weird_substance, multi_drone_weird_substance_farming
 from utils import partial
 
 DIRECTIONS = [North, East, South, West]
@@ -17,11 +18,19 @@ def create_maze():
 	if get_entity_type() == Entities.Bush:
 		substance = get_world_size() * 2**(num_unlocked(Unlocks.Mazes) - 1)
 
-		if num_items(Items.Weird_Substance) > substance:
+		if num_items(Items.Weird_Substance) >= substance:
 			use_item(Items.Weird_Substance, substance)
 			return 1
 		
-	return 0
+		else:
+			#num_gold_required = target_amount - num_items(Items.Gold)
+			# quick_print("Number of Substance needed")
+			# quick_print(substance)
+			if num_unlocked(Unlocks.Megafarm) == 0 or num_unlocked(Unlocks.Polyculture) == 0:
+				farm_weird_substance(substance)
+			else:
+				multi_drone_weird_substance_farming(Items.Weird_Substance, substance)
+		
 
 def calc_left_right(index):
 	turn_right_idx = (index + 1) % 4
@@ -123,7 +132,7 @@ def spawn_new_drone_decider(idx, opp_turn_direction, visited):
 	return None
 
 def drone_master():
-	change_hat(Hats.The_Farmers_Remains)
+	#change_hat(Hats.The_Farmers_Remains)
 	# Visited to keep track of visited coordinates so that drone master doesn't spawn drones at the same location
 	visited = set()
 	forward_direction = North
@@ -178,7 +187,7 @@ def drone_master():
 		
 		
 def maze_solver(target_amount):
-	change_hat(Hats.The_Farmers_Remains)
+	#change_hat(Hats.The_Farmers_Remains)
 	while num_items(Items.Gold) < target_amount:
 		if create_maze():
 			if drone_navigating_fn(North, right_wall_hugger):
@@ -187,7 +196,7 @@ def maze_solver(target_amount):
 			break
 
 def multi_drone_maze_solver(target_amount):
-	change_hat(Hats.The_Farmers_Remains)
+	#change_hat(Hats.The_Farmers_Remains)
 	while num_items(Items.Gold) < target_amount:
 		if create_maze():
 			if drone_master():
@@ -196,7 +205,7 @@ def multi_drone_maze_solver(target_amount):
 			break
 
 if __name__ == "__main__":
-	change_hat(Hats.The_Farmers_Remains)
+	#change_hat(Hats.The_Farmers_Remains)
 	while True:
 		if create_maze():
 			if drone_master():

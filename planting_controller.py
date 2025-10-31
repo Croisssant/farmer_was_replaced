@@ -1,7 +1,7 @@
 from dino_movements import farming_bones_loop
 from farm_gold import multi_drone_gold_farming
 from farm_traversal import traverse_plot_with_fn
-from maze_solver import maze_solver
+from maze_solver import maze_solver, multi_drone_maze_solver
 from multi_drone_planting import multi_drone_plant_farming, multi_drone_weird_substance_farming, multi_drone_wood_farming
 from planting_cactus import farming_cactus_loop, multi_drone_cactus_farming_loop
 from planting_helpers import check_harvest_plant, sunflower_boost, alternate_planting, just_harvest, if_sunflower_then_plant, farm_weird_substance
@@ -100,6 +100,10 @@ def resources_farming_controller(target_amount, resource):
 
 def multi_drone_resources_farming_controller(target_amount, resource):
 	#clear()
+	quick_print("Currently Require: ")
+	quick_print(resource)
+	quick_print(target_amount)
+    
 	if resource == Items.Hay:
 		multi_drone_plant_farming(Entities.Grass, resource, target_amount)
 
@@ -107,7 +111,7 @@ def multi_drone_resources_farming_controller(target_amount, resource):
 		multi_drone_plant_farming(Entities.Carrot, resource, target_amount)
 
 	elif resource == Items.Wood:
-		multi_drone_wood_farming(resource, target_amount)
+		multi_drone_wood_farming(Items.Wood, target_amount)
 
 	elif resource == Items.Pumpkin:
 		multi_drone_pumpkin_farming(target_amount)
@@ -122,7 +126,10 @@ def multi_drone_resources_farming_controller(target_amount, resource):
 		multi_drone_weird_substance_farming(resource, target_amount)
 
 	elif resource == Items.Gold:
-		multi_drone_gold_farming(target_amount)
+		if max_drones() < 5:
+			multi_drone_maze_solver(target_amount)
+		else:
+		    multi_drone_gold_farming(target_amount)
 			
 if __name__ == "__main__":
 	# References for calling these functions

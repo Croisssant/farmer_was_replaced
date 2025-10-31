@@ -94,12 +94,19 @@ compute_farming_sequence({ Items.Hay: 26316800, Items.Pumpkin: 100, Items.Wood: 
 
 def reset_race(unlocks_sequence):
 	for unlocks, num in unlocks_sequence:
-		total_cost =  compute_farming_sequence(calculate_total_cost(get_cost(unlocks, num)))
+
+		unlock_cost = get_cost(unlocks, num)
+		if Items.Carrot in unlock_cost:
+			unlock_cost[Items.Carrot] = unlock_cost[Items.Carrot] * 3
+
+		total_cost =  compute_farming_sequence(calculate_total_cost(unlock_cost))
+
+		
 		
 		while not unlock(unlocks):
-			quick_print("Unlocking: ")
-			quick_print(unlocks)
-			quick_print(num)
+			# quick_print("Unlocking: ")
+			# quick_print(unlocks)
+			# quick_print(num)
 			for item in total_cost:
 				quantity = total_cost[item]
 				clear()
@@ -140,14 +147,50 @@ if __name__ == "__main__":
 		(Unlocks.Pumpkins, 0),
 		(Unlocks.Watering, 0),
 		(Unlocks.Fertilizer, 0),
+		(Unlocks.Fertilizer, 1),
+		(Unlocks.Fertilizer, 2),
+		(Unlocks.Fertilizer, 3),
 		#(Unlocks.Sunflowers, 0),
 		(Unlocks.Cactus, 0),
 		(Unlocks.Expand, 3),
 		(Unlocks.Expand, 4),
-		(Unlocks.Expand, 5),
+		
+		# (Unlocks.Expand, 5),
+
 		# Upgrade Hay and Wood here again
-		(Unlocks.Dinosaurs, 5),
+		(Unlocks.Grass, 5),
+		(Unlocks.Trees, 5),
+		(Unlocks.Carrots, 5),
+
+		(Unlocks.Grass, 6),
+		(Unlocks.Trees, 6),
+		(Unlocks.Carrots, 6),
+
+		(Unlocks.Dinosaurs, 0),
 		(Unlocks.Mazes, 0),
+
+		(Unlocks.Megafarm, 0),
+		(Unlocks.Megafarm, 1),
+		(Unlocks.Megafarm, 2),
+		(Unlocks.Megafarm, 3),
+		(Unlocks.Megafarm, 4),
+
+		(Unlocks.Polyculture, 0),
+		(Unlocks.Expand, 5),
+		(Unlocks.Expand, 6),
+		
+		(Unlocks.Trees, 7),
+		(Unlocks.Grass, 7),
+		(Unlocks.Carrots, 7),
+
+		(Unlocks.Grass, 8),
+		(Unlocks.Trees, 8),
+		(Unlocks.Carrots, 8),
+
+		(Unlocks.Grass, 9),
+		(Unlocks.Trees, 9),
+		(Unlocks.Carrots, 9),
+
 		(Unlocks.Leaderboard, 0),
 		# (Unlocks.Expand, 6),
 
