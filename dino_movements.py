@@ -94,7 +94,7 @@ def farming_bones_loop(target_amount):
 
 
 def farm_bones():
-	change_hat(Hats.Brown_Hat)
+	change_hat(Hats.Straw_Hat)
 	move_to_xy(0, 0)
 	
 	change_hat(Hats.Dinosaur_Hat)

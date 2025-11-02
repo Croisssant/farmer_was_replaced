@@ -15,12 +15,6 @@ def plant_healthy_pumpkins():
 	while True:
 		all_healthy = True
 		
-		# Do an additional check for just planted pumpkins (where it is missed sometimes)
-		# The current bug is that the check still continues while just planted pumpkins
-		# are still growing, hence they're missed during the checks. 
-		# Current solution now is just to check the row 4 times, where it's about the same time as allowing
-		# the just planted pumpkins to grow.
-		# Future improved solution, await for just planted pumpkin before the next check?
 		for _ in range(get_world_size()):
 			if get_entity_type() != Entities.Pumpkin:
 				plant(Entities.Pumpkin)
@@ -54,6 +48,8 @@ def pumpkin_merge_check(target_amount):
 				harvest()
 				break
 			else:
+				# Occasionally, growing pumpkins will be missed, hence if it grows into dead pumpkin
+				# it will be missed as well. Hence, a recheck of the row if the pumpkin hasn't merge.
 				plant_healthy_pumpkins()
 
 def plant_pumpkin():

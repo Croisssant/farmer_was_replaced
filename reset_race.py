@@ -1,7 +1,7 @@
 from builtins import dict, sorted
 from dino_movements import farm_bones
 from farm_traversal import traverse_plot_with_fn
-from maze_solver import maze_solver
+from maze_solver import maze_solver, multi_drone_maze_solver
 from planting_cactus import farm_cactus
 from planting_controller import resources_farming_controller, multi_drone_resources_farming_controller
 from planting_helpers import alternate_planting, check_harvest_plant, just_harvest
@@ -53,6 +53,7 @@ def recursive_get_cost(item, amount, cost_accumulated=None):
 	return cost_accumulated
 	
 
+# calculate_total_cost still needs to be improved to take yield and subsequent yield upgrades into account.
 def calculate_total_cost(cost):
 	total_cost = {}
 
@@ -152,6 +153,7 @@ if __name__ == "__main__":
 		(Unlocks.Speed, 4),
 
 		(Unlocks.Pumpkins, 0),
+		(Unlocks.Sunflowers, 0),
 		(Unlocks.Watering, 0),
 		(Unlocks.Fertilizer, 0),
 		(Unlocks.Fertilizer, 1),
@@ -186,35 +188,35 @@ if __name__ == "__main__":
 		# (Unlocks.Expand, 5),
 		# (Unlocks.Expand, 6),
 		
-		(Unlocks.Trees, 7),
-		(Unlocks.Grass, 7),
-		(Unlocks.Carrots, 7),
+		# (Unlocks.Trees, 7),
+		# (Unlocks.Grass, 7),
+		# (Unlocks.Carrots, 7),
 
-		(Unlocks.Grass, 8),
-		(Unlocks.Trees, 8),
-		(Unlocks.Carrots, 8),
+		# (Unlocks.Grass, 8),
+		# (Unlocks.Trees, 8),
+		# (Unlocks.Carrots, 8),
 
-		(Unlocks.Grass, 9),
-		(Unlocks.Trees, 9),
-		(Unlocks.Carrots, 9),
+		# (Unlocks.Grass, 9),
+		# (Unlocks.Trees, 9),
+		# (Unlocks.Carrots, 9),
 
 		# (Unlocks.Leaderboard, 0),
 		# (Unlocks.Expand, 6),
 	])
-	clear()
-	traverse_plot_with_fn(just_harvest)
-	
-	clear()
-	traverse_plot_with_fn(partial(alternate_planting, Entities.Tree, Entities.Bush, check_harvest_plant))
-	traverse_plot_with_fn(just_harvest)
 
 	clear()
 	traverse_plot_with_fn(partial(check_harvest_plant, Entities.Carrot))
 	traverse_plot_with_fn(just_harvest)
 
+
 	clear()
-	for _ in range(6):
-		pumpkin_farming()
+	for _ in range(150):
+		traverse_plot_with_fn(partial(check_harvest_plant, Entities.Sunflower))
+	traverse_plot_with_fn(just_harvest)
+
+	clear()
+	# for _ in range(6):
+	# 	pumpkin_farming()
 
 	for _ in range(16):
 		farm_cactus()
@@ -222,6 +224,13 @@ if __name__ == "__main__":
 	for _ in range(512):
 		farm_bones()
 
+
 	clear()
-	maze_solver(1000000)
+	maze_solver(2000)
+	unlock(Unlocks.Megafarm)
+
+	multi_drone_maze_solver(8000)
+	unlock(Unlocks.Megafarm)
+
+	multi_drone_maze_solver(1000000)
 	unlock(Unlocks.Leaderboard)

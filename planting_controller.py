@@ -44,11 +44,6 @@ def planting_controller(target_amount, resource):
 
 		elif resource == Items.Pumpkin:
 			single_drone_pumpkin_farming(target_amount, resource)
-			# farm_plant(
-			# 	partial(check_harvest_plant, Entities.Pumpkin),
-			# 	target_amount,
-			# 	resource
-			# )
 					 
 	else:
 		if resource == Items.Hay:
@@ -73,11 +68,7 @@ def planting_controller(target_amount, resource):
 			)
 
 		elif resource == Items.Pumpkin:
-			farm_plant(
-				partial(sunflower_boost, Entities.Pumpkin),
-				target_amount,
-				resource
-			)
+			single_drone_pumpkin_farming(target_amount, resource)
 			   
 		
 def resources_farming_controller(target_amount, resource):
